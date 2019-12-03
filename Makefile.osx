@@ -1,0 +1,65 @@
+CXXFLAGS=-g -fPIC -DHPX_APPLICATION_EXPORTS -DHPX_ENABLE_ASSERT_HANDLER -D_DEBUG -DDEBUG -DHPX_DEBUG -DHPX_ENABLE_ASSERT_HANDLER -D_DEBUG -DDEBUG -DBOOST_ALL_NO_LIB -DAPEX_HAVE_HPX_CONFIG -DDEBUG -DAPEX_HAVE_ACTIVEHARMONY -std=c++17 -fPIC -I/Users/khuck/src/hpx/build/include -I/opt/local/include -I/Users/khuck/src/hpx/build/apex/src/apex
+LDFLAGS=-g -L/Users/khuck/install/activeharmony/4.6/lib -L/Users/khuck/install/otf2/2.2/lib -L/Users/khuck/src/hpx/build/lib /Users/khuck/src/hpx/build/lib/libhpx_wrapd.a /Users/khuck/src/hpx/build/lib/libhpxd.1.4.0.dylib /opt/local/lib/libboost_thread-mt.dylib /opt/local/lib/libboost_context-mt.dylib /opt/local/lib/libboost_chrono-mt.dylib /opt/local/lib/libboost_date_time-mt.dylib /opt/local/lib/libboost_atomic-mt.dylib /opt/local/lib/libboost_program_options-mt.dylib /opt/local/lib/libtcmalloc_minimal.dylib /opt/local/lib/libhwloc.dylib /Users/khuck/src/hpx/build/lib/libhpx_apex.1.4.0.dylib -lotf2 /usr/lib/libdl.dylib -lharmony -lotf2 -ldl -Wl,-e,_initialize_main
+#CXXFLAGS=-g $(shell pkg-config --cflags hpx_application_debug)
+#LDFLAGS=-g $(shell pkg-config --libs hpx_application_debug)
+
+all: error error_pre error_post error_async error_pre_async error_post_async
+
+default: all
+
+#-------------------------------------------
+# Synchronous "then" task
+error: error.o
+	g++ -o error error.o $(LDFLAGS)
+
+error.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS)
+#-------------------------------------------
+
+#-------------------------------------------
+# Synchronous "then" task with annotated_function
+error_pre: error_pre.o
+	g++ -o error_pre error_pre.o $(LDFLAGS)
+
+error_pre.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS) -DANNOTATE_PRE -o error_pre.o
+#-------------------------------------------
+
+#-------------------------------------------
+# Synchronous "then" task with annotate_function
+error_post: error_post.o
+	g++ -o error_post error_post.o $(LDFLAGS)
+
+error_post.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS) -DANNOTATE_POST -o error_post.o
+#-------------------------------------------
+
+#-------------------------------------------
+# Asynchronous "then" task
+error_async: error_async.o
+	g++ -o error_async error_async.o $(LDFLAGS)
+
+error_async.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS) -DASYNC -o error_async.o
+#-------------------------------------------
+
+#-------------------------------------------
+# Asynchronous "then" task with annotated_function
+error_pre_async: error_pre_async.o
+	g++ -o error_pre_async error_pre_async.o $(LDFLAGS)
+
+error_pre_async.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS) -DASYNC -DANNOTATE_PRE -o error_pre_async.o
+
+#-------------------------------------------
+# Asynchronous "then" task with annotate_function
+error_post_async: error_post_async.o
+	g++ -o error_post_async error_post_async.o $(LDFLAGS)
+
+error_post_async.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS) -DASYNC -DANNOTATE_POST -o error_post_async.o
+#-------------------------------------------
+
+clean:
+	rm -f error error_pre error_post error_async error_pre_async error_post_async *.o
+

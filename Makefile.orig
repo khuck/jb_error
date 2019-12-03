@@ -1,0 +1,16 @@
+CXXFLAGS=$(shell pkg-config --cflags hpx_application_debug) -g
+LDFLAGS=-g /dev/shm/khuck/hpx/install/lib64/libhpx_wrapd.a /dev/shm/khuck/hpx/install/lib64/libhpxd.so.1.4.0 /home/users/khuck/src/hpx/boost_cyclops_1.65.1/lib/libboost_system.so /home/users/khuck/src/hpx/boost_cyclops_1.65.1/lib/libboost_program_options.so /home/users/khuck/src/hpx/boost_cyclops_1.65.1/lib/libboost_filesystem.so /usr/local/packages/gperftools/2.5/lib/libtcmalloc_minimal.so /usr/lib64/libhwloc.so /dev/shm/khuck/hpx/install/lib64/libhpx_apex.so.1.4.0 /usr/lib64/libdl.so -Wl,-wrap=main -L/usr/local/packages/activeharmony/4.6.0-ppc64le/lib -L/usr/local/packages/otf2/2.0-ppc64le/lib -L/usr/local/packages/papi/5.7.0/lib -L/usr/local/packages/binutils/2.25/lib -L/dev/shm/khuck/hpx/install/lib64 -lpthread -lpapi -lbfd -lz -lharmony -lotf2 -latomic -ldl -lrt -Wl,-rpath,/dev/shm/khuck/hpx/install/lib64 -Wl,-rpath,/usr/local/packages/activeharmony/4.6.0-ppc64le/lib -Wl,-rpath,/usr/local/packages/otf2/2.0-ppc64le/lib -Wl,-rpath,/usr/local/packages/papi/5.7.0/lib -Wl,-rpath,/usr/local/packages/binutils/2.25/lib -Wl,-rpath,/home/users/khuck/src/hpx/boost_cyclops_1.65.1/lib -Wl,-rpath,/usr/local/packages/gperftools/2.5/lib
+
+all: error
+
+default: all
+
+error: error.o
+	g++ -o error error.o $(LDFLAGS)
+
+error.o : error.cpp Makefile
+	g++ -c error.cpp $(CXXFLAGS)
+
+clean:
+	rm -f error *.o
+

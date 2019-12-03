@@ -1,0 +1,4 @@
+_regexp-env DYLD_LIBRARY_PATH=/Users/khuck/src/hpx/build/lib
+_regexp-env DYLD_INSERT_LIBRARIES=
+_regexp-env DYLD_LD_PRELOAD=
+_regexp-env DYLD_FORCE_FLAT_NAMESPACE=1
